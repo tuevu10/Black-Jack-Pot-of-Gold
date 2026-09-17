@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Pot of Gold Blackjack"
+description = "A casino-standard Blackjack game with an Irish pot of gold theme. Dealer hits on soft 17, 3:2 blackjack payout, standard casino rules. Each hand shows a live strategy matrix panel on the right side displaying the optimal action (Hit, Stand, Double, Split, Surrender) based on the player's hand vs the dealer's upcard."
+version = "1.0.0"
+id = "artifacts/blackjack"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20963
+
+[services.development]
+run = "pnpm --filter @workspace/blackjack run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/blackjack", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/blackjack/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20963"
+BASE_PATH = "/"
